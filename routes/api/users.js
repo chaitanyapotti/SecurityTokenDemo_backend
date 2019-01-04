@@ -21,30 +21,38 @@ router.post("/register", (req, res) => {
         errors.email = " Email already exists";
         return res.status(400).json(errors);
       }
-      User.findOne({ username: req.body.username }).then(user => {
-        if (user) {
-          errors.username = "username already exists";
-          return res.status(400).json(errors);
-        } else {
-          const newUser = new User({
-            email: req.body.email,
-            first_name: req.body.firstName,
-            last_name: req.body.lastName,
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role
-          });
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-              newUser.password = hash;
-              newUser
-                .save()
-                .then(user => res.status(200).json(user))
-                .catch(err => console.log(err));
+      User.findOne({ username: req.body.username })
+        .then(user => {
+          if (user) {
+            errors.username = "username already exists";
+            return res.status(400).json(errors);
+          } else {
+            const newUser = new User({
+              email: req.body.email,
+              first_name: req.body.firstName,
+              last_name: req.body.lastName,
+              username: req.body.username,
+              password: req.body.password,
+              role: req.body.role
             });
-          });
-        }
-      });
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                newUser.password = hash;
+                newUser
+                  .save()
+                  .then(user => res.status(200).json(user))
+                  .catch(err => {
+                    console.log(err);
+                    res.status(500).json({});
+                  });
+              });
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({});
+        });
     })
     .catch(err => {
       console.log(err);
@@ -89,23 +97,32 @@ router.post("/login", (req, res) => {
           })
           .catch(err => console.log(err));
       }
-      bcrypt.compare(password, user.password).then(isMatch => {
-        if (isMatch) {
-          const payload = { name: user.name, id: user.id };
+      bcrypt
+        .compare(password, user.password)
+        .then(isMatch => {
+          if (isMatch) {
+            const payload = { name: user.name, id: user.id };
 
-          //Sigin Token
-          jwt.sign(payload, keys.secretOrKey, { expiresIn: 360000 }, (err, token) => {
-            return res.status(200).json({
-              succes: true,
-              token: "Bearer " + token
+            //Sigin Token
+            jwt.sign(payload, keys.secretOrKey, { expiresIn: 360000 }, (err, token) => {
+              return res.status(200).json({
+                succes: true,
+                token: "Bearer " + token
+              });
             });
-          });
-        } else {
-          (errors.password = "password is incorrect"), res.status(400).json(errors);
-        }
-      });
+          } else {
+            (errors.password = "password is incorrect"), res.status(400).json(errors);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({});
+        });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({});
+    });
 });
 
 module.exports = router;
