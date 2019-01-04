@@ -10,7 +10,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 require("./config/passport")(passport);
-const url = f(process.env.url);
+const username = encodeURIComponent(process.env.Mongo_UserName);
+const password = encodeURIComponent(process.env.Mongo_Password);
+
+const url = f(`mongodb://%s:%s@${process.env.Mongo_URL_PORT}/two12`, username, password);
 
 mongoose
   .connect(
@@ -19,7 +22,7 @@ mongoose
   )
   .then(() => console.log("mongo db connected"))
   .catch(err => console.log(err));
-  
+
 app.use("/api/users", users);
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port: ${port}`));
