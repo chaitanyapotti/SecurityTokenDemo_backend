@@ -6,7 +6,7 @@ const users = require("./routes/api/users");
 const bodyParser = require("body-parser");
 const app = express();
 
-require('dotenv').config();
+require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
@@ -21,7 +21,7 @@ mongoose
     url,
     { useNewUrlParser: true }
   )
-  .then(() => console.log("mongo db connected"))
+  .then(() => console.log("mongo db connection - success"))
   .catch(err => console.log(err));
 
 app.use("/api/users", users);
