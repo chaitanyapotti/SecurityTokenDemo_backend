@@ -43,7 +43,7 @@ router.post("/register", (req, res) => {
                   .then(user => res.status(200).json(user))
                   .catch(err => {
                     console.log(err);
-                    res.status(500).json({});
+                    return res.status(500).json({});
                   });
               });
             });
@@ -51,12 +51,12 @@ router.post("/register", (req, res) => {
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json({});
+          return res.status(500).json({});
         });
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({});
+      return res.status(500).json({});
     });
 });
 
@@ -85,7 +85,7 @@ router.post("/login", (req, res) => {
                 const payload = { name: user.name, id: user.id };
                 jwt.sign(payload, keys.secretOrKey, { expiresIn: 360000 }, (err, token) => {
                   return res.status(200).json({
-                    succes: true,
+                    success: true,
                     token: "Bearer " + token
                   });
                 });
@@ -95,29 +95,33 @@ router.post("/login", (req, res) => {
               }
             });
           })
-          .catch(err => console.log(err));
-      }
-      bcrypt
-        .compare(password, user.password)
-        .then(isMatch => {
-          if (isMatch) {
-            const payload = { name: user.name, id: user.id };
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({});
+          });
+      } else {
+        bcrypt
+          .compare(password, user.password)
+          .then(isMatch => {
+            if (isMatch) {
+              const payload = { name: user.name, id: user.id };
 
-            //Sigin Token
-            jwt.sign(payload, keys.secretOrKey, { expiresIn: 360000 }, (err, token) => {
-              return res.status(200).json({
-                succes: true,
-                token: "Bearer " + token
+              //Sigin Token
+              jwt.sign(payload, keys.secretOrKey, { expiresIn: 360000 }, (err, token) => {
+                return res.status(200).json({
+                  success: true,
+                  token: "Bearer " + token
+                });
               });
-            });
-          } else {
-            (errors.password = "password is incorrect"), res.status(400).json(errors);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).json({});
-        });
+            } else {
+              (errors.password = "password is incorrect"), res.status(400).json(errors);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({});
+          });
+      }
     })
     .catch(err => {
       console.log(err);
