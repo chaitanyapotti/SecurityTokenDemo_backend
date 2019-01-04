@@ -6,6 +6,7 @@ const users = require("./routes/api/users");
 const bodyParser = require("body-parser");
 const app = express();
 
+require('dotenv').config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
