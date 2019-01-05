@@ -107,7 +107,9 @@ router.post("/login", (req, res) => {
             jwt.sign(payload, keys.secretOrKey, { expiresIn: 360000 }, (err, token) => {
               return res.status(200).json({
                 succes: true,
-                token: "Bearer " + token
+                token: "Bearer " + token,
+                role: user.role,
+                first_name : user.first_name
               });
             });
           } else {
