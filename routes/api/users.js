@@ -88,7 +88,8 @@ router.post("/login", (req, res) => {
                     success: true,
                     token: "Bearer " + token,
                     role: user.role,
-                    first_name: user.first_name
+                    first_name: user.first_name,
+                    publicAddress: user.publicAddress
                   });
                 });
               } else {
@@ -114,7 +115,8 @@ router.post("/login", (req, res) => {
                   success: true,
                   token: "Bearer " + token,
                   role: user.role,
-                  first_name: user.first_name
+                  first_name: user.first_name,
+                  publicAddress: user.publicAddress
                 });
               });
             } else {
