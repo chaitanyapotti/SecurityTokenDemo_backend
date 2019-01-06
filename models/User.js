@@ -23,6 +23,10 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  publicAddress: {
+    type: String,
+    required: false
+  },
   role: {
     type: String,
     enum: ROLES,
