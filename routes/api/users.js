@@ -89,7 +89,10 @@ router.post("/login", (req, res) => {
                     token: "Bearer " + token,
                     role: user.role,
                     first_name: user.first_name,
-                    publicAddress: user.publicAddress
+                    publicAddress: user.publicAddress,
+                    investors: user.hasOwnProperty(investors) ? user.investors : null,
+                    reserveAddress: user.hasOwnProperty(reserveAddress) ? user.reserveAddress : null,
+                    conversionRatesAddress: user.hasOwnProperty(conversionRatesAddress) ? user.conversionRatesAddress : null
                   });
                 });
               } else {
@@ -116,7 +119,10 @@ router.post("/login", (req, res) => {
                   token: "Bearer " + token,
                   role: user.role,
                   first_name: user.first_name,
-                  publicAddress: user.publicAddress
+                  publicAddress: user.publicAddress,
+                  investors: user.hasOwnProperty(investors) ? user.investors : null,
+                  reserveAddress: user.hasOwnProperty(reserveAddress) ? user.reserveAddress : null,
+                  conversionRatesAddress: user.hasOwnProperty(conversionRatesAddress) ? user.conversionRatesAddress : null
                 });
               });
             } else {

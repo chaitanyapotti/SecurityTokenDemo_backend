@@ -27,6 +27,18 @@ const UserSchema = new Schema({
     type: String,
     required: false
   },
+  reserveAddress: {
+    type: String,
+    required: false
+  },
+  conversionRatesAddress: {
+    type: String,
+    required: false
+  },
+  investors: {
+    type: Array,
+    required: false
+  },
   role: {
     type: String,
     enum: ROLES,
