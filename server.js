@@ -28,6 +28,13 @@ mongoose
   .then(() => console.log("mongo db connection - success"))
   .catch(err => console.log(err));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "DELETE, PUT, GET, POST, PATCH");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use("/api/users", users);
 app.use("/web3/erc20token", erc20token);
 
