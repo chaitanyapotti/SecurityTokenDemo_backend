@@ -90,9 +90,9 @@ router.post("/login", (req, res) => {
                     role: user.role,
                     first_name: user.first_name,
                     publicAddress: user.publicAddress,
-                    investors: user.hasOwnProperty(investors) ? user.investors : null,
-                    reserveAddress: user.hasOwnProperty(reserveAddress) ? user.reserveAddress : null,
-                    conversionRatesAddress: user.hasOwnProperty(conversionRatesAddress) ? user.conversionRatesAddress : null
+                    investors: user.investors || undefined,
+                    reserveAddress: user.reserveAddress || undefined,
+                    conversionRatesAddress: user.conversionRatesAddress || undefined
                   });
                 });
               } else {
@@ -120,9 +120,9 @@ router.post("/login", (req, res) => {
                   role: user.role,
                   first_name: user.first_name,
                   publicAddress: user.publicAddress,
-                  investors: user.hasOwnProperty(investors) ? user.investors : null,
-                  reserveAddress: user.hasOwnProperty(reserveAddress) ? user.reserveAddress : null,
-                  conversionRatesAddress: user.hasOwnProperty(conversionRatesAddress) ? user.conversionRatesAddress : null
+                  investors: user.investors || undefined,
+                  reserveAddress: user.reserveAddress || undefined,
+                  conversionRatesAddress: user.conversionRatesAddress || undefined
                 });
               });
             } else {
