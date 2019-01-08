@@ -17,6 +17,23 @@ function validateInputs(req, res, special = true) {
   }
 }
 
+//localhost:2020/web3/erc20token/userbalance?address=0xaE9BDE445854D6ACFbC2834b495BC8D814494078&network=rinkeby
+router.get("/userbalance", (req, res) => {
+  validateInputs(req, res, false);
+  const web3 = web3Read(req.query.network);
+  web3.eth
+    .getBalance(req.query.address)
+    .then(result => {
+      res.status(200).send({
+        message: "Success",
+        info: "This has decimals of 18",
+        data: result.toString(),
+        units: "divide by 10^18 or use web3.utils.fromWei() to get normal token count"
+      });
+    })
+    .catch(err => res.status(400).send(err.message));
+});
+
 //localhost:3000/web3/erc20token/tokenbalance?address=0xaE9BDE445854D6ACFbC2834b495BC8D814494078&network=rinkeby&useraddress=0x6c86522d0a9808970A62CEaB2704d44ec6E63e92
 router.get("/tokenbalance", (req, res) => {
   validateInputs(req, res);
