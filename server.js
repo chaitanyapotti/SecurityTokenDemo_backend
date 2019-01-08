@@ -4,6 +4,7 @@ const passport = require("passport");
 const f = require("util").format;
 const users = require("./routes/api/users");
 const erc20token = require("./routes/api/erc20token");
+const trade = require("./routes/api/trade");
 const bodyParser = require("body-parser");
 const app = express();
 
@@ -19,6 +20,12 @@ const url = f(`mongodb://%s:%s@${process.env.Mongo_URL_PORT}/two12`, username, p
 
 const supportedNetworks = Object.freeze({ main: 1, kovan: 2, rinkeby: 3, private: 4 });
 global.supportedNetworks = supportedNetworks;
+
+const kyberNetworkProxyAddress = Object.freeze({ rinkeby: "0x6624d80FC06169FAbeaa8c534693cc6bcd7513cc" });
+global.kyberNetworkProxyAddress = kyberNetworkProxyAddress;
+
+const ETH_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+global.ETH_ADDRESS = ETH_ADDRESS;
 
 mongoose
   .connect(
@@ -37,6 +44,7 @@ app.use(function(req, res, next) {
 
 app.use("/api/users", users);
 app.use("/web3/erc20token", erc20token);
+app.use("/web3/trade", trade);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port: ${port}`));
