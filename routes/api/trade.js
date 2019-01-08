@@ -5,14 +5,14 @@ const contractInstance = require("../../utils/contractInstance");
 const web3Read = require("../../utils/web3Read");
 
 function validateInputs(req, res, special = true) {
-  if (!("network" in req.query && "address" in req.query)) return res.status(400).send("Bad Request");
-  if (!(req.query.network in global.supportedNetworks)) return res.status(400).send("Not a supported network");
+  if (!("network" in req.query && "address" in req.query)) return res.status(400).json("Bad Request");
+  if (!(req.query.network in global.supportedNetworks)) return res.status(400).json("Not a supported network");
   if (special) {
-    if (!("useraddress" in req.query)) return res.status(400).send("Bad Request");
+    if (!("useraddress" in req.query)) return res.status(400).json("Bad Request");
     const web3 = web3Read(req.query.network);
     const isCheckSummed = web3.utils.checkAddressChecksum(req.query.useraddress);
     if (!isCheckSummed) {
-      return res.status(400).send("Not a valid address");
+      return res.status(400).json("Not a valid address");
     }
   }
 }
@@ -26,7 +26,7 @@ router.get("/getbuyrate", (req, res) => {
   contractInstance("KyberNetworkProxy", global.kyberNetworkProxyAddress[req.query.network], req.query.network)
     .then(instance => instance.methods.getExpectedRate(global.ETH_ADDRESS, req.query.tokenaddress, etherAmount).call())
     .then(result => {
-      res.status(200).send({
+      res.status(200).json({
         message: "Success",
         info: "This has decimals same as token (usually: 18)",
         data: result,
@@ -49,7 +49,7 @@ router.get("/getsellrate", (req, res) => {
   contractInstance("KyberNetworkProxy", global.kyberNetworkProxyAddress[req.query.network], req.query.network)
     .then(instance => instance.methods.getExpectedRate(req.query.tokenaddress, global.ETH_ADDRESS, tokenAmount).call())
     .then(result => {
-      res.status(200).send({
+      res.status(200).json({
         message: "Success",
         info: "This has decimals same as token (usually: 18)",
         data: result,
