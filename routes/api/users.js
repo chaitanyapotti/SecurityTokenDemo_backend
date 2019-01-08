@@ -89,9 +89,14 @@ router.post("/login", (req, res) => {
                     token: "Bearer " + token,
                     role: user.role,
                     first_name: user.first_name,
+                    email: user.email,
+                    phone: user.phone,
+                    last_name: user.last_name,
                     publicAddress: user.publicAddress,
                     investors: user.investors || undefined,
                     reserveAddress: user.reserveAddress || undefined,
+                    date: user.date,
+                    id: user._id,
                     conversionRatesAddress: user.conversionRatesAddress || undefined
                   });
                 });
