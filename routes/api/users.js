@@ -97,6 +97,7 @@ router.post("/login", (req, res) => {
                     reserveAddress: user.reserveAddress || undefined,
                     date: user.date,
                     id: user._id,
+                    status: user.status,
                     conversionRatesAddress: user.conversionRatesAddress || undefined
                   });
                 });
