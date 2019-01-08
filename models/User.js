@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ROLES = ["BROKER_DEALER", "MARKET_MAKER", "INVESTOR"];
+const STATUS = ["YES", "NO"];
 
 const UserSchema = new Schema({
   username: {
@@ -21,7 +22,7 @@ const UserSchema = new Schema({
   },
   date: {
     type: Date,
-    default: Date.now
+    required: false
   },
   phone: {
     type: String,
@@ -51,6 +52,11 @@ const UserSchema = new Schema({
     type: String,
     enum: ROLES,
     default: "INVESTOR"
+  },
+  status: {
+    type: String,
+    enum: STATUS,
+    default: "YES"
   }
 });
 
