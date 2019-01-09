@@ -25,4 +25,4 @@ const PriceHistorySchema = new Schema({
   }
 });
 
-module.exports = User = mongoose.model("users", PriceHistorySchema);
+module.exports = User = mongoose.model("prices", PriceHistorySchema);
