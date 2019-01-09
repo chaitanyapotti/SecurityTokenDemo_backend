@@ -5,7 +5,6 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "set PORT=2020 & set Mongo_UserName=twopotti&& set Mongo_Password=Potti123@&& set Mongo_URL_PORT=ds247944.mlab.com:47944 & node server.js",
     "server": "nodemon server.js"
   },
   "dependencies": {
