@@ -4,6 +4,7 @@ const passport = require("passport");
 const f = require("util").format;
 const users = require("./routes/api/users");
 const erc20token = require("./routes/api/erc20token");
+const price = require("./routes/api/price");
 const bodyParser = require("body-parser");
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(function(req, res, next) {
 
 app.use("/api/users", users);
 app.use("/web3/erc20token", erc20token);
+app.use("/api/price", price);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port: ${port}`));
