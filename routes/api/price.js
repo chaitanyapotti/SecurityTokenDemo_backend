@@ -3,7 +3,7 @@ const router = express.Router();
 const PriceHistory = require("../../models/PriceHistory");
 
 function validateInputs(req, res, special = true) {
-  if (!("tokenaddress" in req.query)) return res.status(400).send("Bad Request");
+  if (!("tokenaddress" in req.query)) return res.status(400).json("Bad Request");
 }
 
 router.get("/", (req, res) => {
@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
         });
       }
     })
-    .catch(err => res.status(400).send(err.message));
+    .catch(err => res.status(400).json(err.message));
 });
 
 module.exports = router;
