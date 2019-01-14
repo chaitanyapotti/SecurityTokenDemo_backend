@@ -5,6 +5,7 @@ const f = require("util").format;
 const users = require("./routes/api/users");
 const erc20token = require("./routes/api/erc20token");
 const price = require("./routes/api/price");
+const transaction = require("./routes/api/transaction");
 const trade = require("./routes/api/trade");
 const contractdata = require("./routes/api/contractdata");
 const bodyParser = require("body-parser");
@@ -47,6 +48,7 @@ app.use(function(req, res, next) {
 app.use("/api/users", users);
 app.use("/web3/erc20token", erc20token);
 app.use("/api/price", price);
+app.use("/api/transaction", transaction);
 app.use("/web3/trade", trade);
 app.use("/api/contractdata", contractdata);
 
