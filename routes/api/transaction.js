@@ -4,8 +4,8 @@ const Transaction = require("../../models/Transaction");
 const validateTransactionInput = require("../../validations/transaction");
 
 function validateInputs(req, res) {
-  if (!("bdAddress" in req.query)) return res.status(400).json("Bad Request");
-  if (!("investorAddress" in req.query)) return res.status(400).json("Bad Request");
+  if (!("bd_address" in req.query)) return res.status(400).json("Bad Request input");
+  if (!("investor_address" in req.query)) return res.status(400).json("Bad Request input");
 }
 
 // @route POST api/transaction/
@@ -41,17 +41,19 @@ router.post("/", (req, res) => {
       }
     })
     .catch(err => {
+      console.log(err);
       return res.status(500).json({});
     });
 });
 
 router.get("/", (req, res) => {
   validateInputs(req, res);
-  Transaction.find({ bd_address: req.query.bdAddress, investor_address: req.query.investorAddress })
+  Transaction.find({ bd_address: req.query.bd_address, investor_address: req.query.investor_address })
     .then(transactions => {
       return res.status(200).send(transactions);
     })
     .catch(err => {
+      console.log(err);
       return res.status(500).json({ errors: err });
     });
 });
