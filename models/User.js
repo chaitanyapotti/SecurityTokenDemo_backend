@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ROLES = ["BROKER_DEALER", "MARKET_MAKER", "INVESTOR"];
 const STATUS = ["YES", "NO"];
+const RESERVE_TYPE = ["REGULAR", "AUTOMATED", "LIT"];
 
 const UserSchema = new Schema({
   username: {
@@ -57,6 +58,11 @@ const UserSchema = new Schema({
     type: String,
     enum: STATUS,
     default: "YES"
+  },
+  reserveType: {
+    type: String,
+    enum: RESERVE_TYPE,
+    default: "REGULAR"
   }
 });
 
