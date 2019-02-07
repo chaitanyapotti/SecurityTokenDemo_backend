@@ -98,7 +98,8 @@ router.post("/login", (req, res) => {
                     date: user.date,
                     id: user._id,
                     status: user.status,
-                    conversionRatesAddress: user.conversionRatesAddress || undefined
+                    conversionRatesAddress: user.conversionRatesAddress || undefined,
+                    reserveType: user.reserveType || undefined
                   });
                 });
               } else {
