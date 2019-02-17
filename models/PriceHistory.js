@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const TICKERS = ["LMD", "RIV"];
+const TICKERS = ["LMD", "RIV", "MANA", "SNT"];
 
 const PriceHistorySchema = new Schema({
   ticker: {

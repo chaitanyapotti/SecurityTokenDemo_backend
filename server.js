@@ -25,7 +25,7 @@ const url = f(`mongodb://%s:%s@${process.env.Mongo_URL_PORT}/two12`, username, p
 const supportedNetworks = Object.freeze({ main: 1, kovan: 2, rinkeby: 3, private: 4 });
 global.supportedNetworks = supportedNetworks;
 
-const kyberNetworkProxyAddress = Object.freeze({ rinkeby: "0x6624d80FC06169FAbeaa8c534693cc6bcd7513cc" });
+const kyberNetworkProxyAddress = Object.freeze({ rinkeby: "0xd1C404ff23b0B76F9520ef7730a2d0A4Abd3767d" });
 global.kyberNetworkProxyAddress = kyberNetworkProxyAddress;
 
 const ETH_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
