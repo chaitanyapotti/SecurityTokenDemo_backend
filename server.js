@@ -8,6 +8,7 @@ const price = require("./routes/api/price");
 const transaction = require("./routes/api/transaction");
 const trade = require("./routes/api/trade");
 const contractdata = require("./routes/api/contractdata");
+const addinvestor = require("./routes/api/addinvestor");
 const bodyParser = require("body-parser");
 const app = express();
 
@@ -31,10 +32,7 @@ const ETH_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 global.ETH_ADDRESS = ETH_ADDRESS;
 
 mongoose
-  .connect(
-    url,
-    { useNewUrlParser: true }
-  )
+  .connect(url, { useNewUrlParser: true })
   .then(() => console.log("mongo db connection - success"))
   .catch(err => console.log(err));
 
@@ -51,6 +49,7 @@ app.use("/api/price", price);
 app.use("/api/transaction", transaction);
 app.use("/web3/trade", trade);
 app.use("/api/contractdata", contractdata);
+app.use("/api/add", addinvestor);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port: ${port}`));
