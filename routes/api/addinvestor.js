@@ -18,7 +18,7 @@ router.post("/addinvestor", (req, res) => {
         status: "pending"
       };
       user.investors.push(investor);
-      console.log("user in add investor", user);
+      return res.status(200).json(investor);
     })
     .catch(err => {
       console.log(err);
