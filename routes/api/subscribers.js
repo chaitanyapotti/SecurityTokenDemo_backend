@@ -13,7 +13,7 @@ router.post("/", (req, res) => {
     .then(subscribe => {
       if (subscribe) {
         errors.email = " Email already exists";
-        return res.status(400).json(errors);
+        return res.status(200).json(errors);
       }
       const subscriber = new Subscribe({
         email: req.body.email
