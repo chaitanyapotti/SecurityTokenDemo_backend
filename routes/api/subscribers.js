@@ -12,7 +12,8 @@ router.post("/", (req, res) => {
   Subscribe.findOne({ email: req.body.email })
     .then(subscribe => {
       if (subscribe) {
-        errors.email = " Email already exists";
+        errors.email = "Email already exists";
+        errors.status = "DUPLICATE";
         return res.status(200).json(errors);
       }
       const subscriber = new Subscribe({
