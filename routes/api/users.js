@@ -148,4 +148,27 @@ router.post("/login", (req, res) => {
     });
 });
 
+// @route GET/users/status
+// @desc get verification status of the user
+// @access Public
+
+router.get("/status", (req, res) => {
+  const user_id = req.query.id;
+  console.log(user_id, "u");
+  User.findById(user_id)
+    .then(user => {
+      if (!user) {
+        return res.status(400).json({ id: "user not found" });
+      } else {
+        return res.status(200).json({
+          kycStatus: user.kycStatus,
+          accreditationStatus: user.accreditationStatus,
+          amlStatus: user.amlStatus,
+          verificationStatus: user.verificationStatus
+        });
+      }
+    })
+    .catch(err => res.status(400).json(err.message));
+});
+
 module.exports = router;

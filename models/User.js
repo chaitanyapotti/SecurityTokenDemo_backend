@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 const ROLES = ["BROKER_DEALER", "MARKET_MAKER", "INVESTOR"];
 const STATUS = ["APPROVED", "PENDING", "NO"];
 const RESERVE_TYPE = ["REGULAR", "AUTOMATED", "LIT"];
+const KYC_STATUS = ["YES", "NO"];
+const AML_STATUS = ["YES", "NO"];
+const ACCREDITATION_STATUS = ["YES", "NO"];
+const VERIFICATION_STATUS = ["YES", "NO"];
 
 const UserSchema = new Schema({
   username: {
@@ -63,6 +67,26 @@ const UserSchema = new Schema({
     type: String,
     enum: RESERVE_TYPE,
     default: "REGULAR"
+  },
+  kycStatus: {
+    type: String,
+    enum: KYC_STATUS,
+    default: "NO"
+  },
+  accreditationStatus: {
+    type: String,
+    enum: ACCREDITATION_STATUS,
+    default: "NO"
+  },
+  amlStatus: {
+    type: String,
+    enum: AML_STATUS,
+    default: "NO"
+  },
+  verificationStatus: {
+    type: String,
+    enum: VERIFICATION_STATUS,
+    default: "NO"
   }
 });
 
