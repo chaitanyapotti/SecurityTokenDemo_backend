@@ -21,7 +21,7 @@ require("./config/passport")(passport);
 const username = encodeURIComponent(process.env.Mongo_UserName);
 const password = encodeURIComponent(process.env.Mongo_Password);
 
-const url = f(`mongodb://%s:%s@${process.env.Mongo_URL_PORT}/two12`, username, password);
+const url = f(`mongodb://%s:%s@${process.env.Mongo_URL_PORT}/SECURITY_TOKEN`, username, password);
 
 const supportedNetworks = Object.freeze({ main: 1, kovan: 2, rinkeby: 3, private: 4 });
 global.supportedNetworks = supportedNetworks;
