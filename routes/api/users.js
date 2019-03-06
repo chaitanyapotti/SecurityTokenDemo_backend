@@ -180,7 +180,7 @@ router.get("/status", (req, res) => {
         return res.status(200).json(generateUserObject(user));
       }
     })
-    .catch(err => res.status(400).json(err.message));
+    .catch(err => res.status(500).json(err.message));
 });
 
 // @route GET/users/pulicAddress
@@ -202,7 +202,24 @@ router.get("/public_address", (req, res) => {
         return res.status(200).json(generateUserObject(user));
       }
     })
-    .catch(err => res.status(400).json(err.message));
+    .catch(err => res.status(500).json(err.message));
+});
+
+router.patch("/kyc_status", (req, res) => {
+  // validate these two
+  // status should also be one of STATUS objects in model
+  const user_id = req.query.id;
+  const status = req.body.status;
+  User.findByIdAndUpdate(user_id, { kycStatus: status })
+    .then(user => {
+      if (!user) {
+        return res.status(400).json({ id: "user not found" });
+      } else {
+        console.log(user);
+        return res.status(200).json(generateUserObject(user));
+      }
+    })
+    .catch(err => res.status(500).json(err.message));
 });
 
 module.exports = router;
