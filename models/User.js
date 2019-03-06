@@ -46,27 +46,32 @@ const UserSchema = new Schema({
   status: {
     type: String,
     enum: STATUS,
-    default: "PENDING"
+    default: "PENDING",
+    required: true
   },
   kycStatus: {
     type: String,
     enum: STATUS,
-    default: "PENDING"
+    default: "PENDING",
+    required: true
   },
   accreditationStatus: {
     type: String,
     enum: STATUS,
-    default: "PENDING"
+    default: "PENDING",
+    required: true
   },
   amlStatus: {
     type: String,
     enum: STATUS,
-    default: "PENDING"
+    default: "PENDING",
+    required: true
   },
   reserveType: {
     type: String,
     enum: RESERVE_TYPE,
-    default: "REGULAR"
+    default: "REGULAR",
+    required: false
   },
   reserveAddress: {
     type: String,
