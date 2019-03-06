@@ -1,12 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ROLES = ["BROKER_DEALER", "MARKET_MAKER", "INVESTOR"];
-const STATUS = ["APPROVED", "PENDING", "NO"];
+const STATUS = ["APPROVED", "PENDING", "REJECTED"];
 const RESERVE_TYPE = ["REGULAR", "AUTOMATED", "LIT"];
-const KYC_STATUS = ["YES", "NO"];
-const AML_STATUS = ["YES", "NO"];
-const ACCREDITATION_STATUS = ["YES", "NO"];
-const VERIFICATION_STATUS = ["YES", "NO"];
 
 const UserSchema = new Schema({
   username: {
@@ -27,11 +23,11 @@ const UserSchema = new Schema({
   },
   date: {
     type: Date,
-    required: false
+    required: true
   },
   phone: {
     type: String,
-    required: false
+    required: true
   },
   password: {
     type: String,
@@ -39,7 +35,38 @@ const UserSchema = new Schema({
   },
   publicAddress: {
     type: String,
-    required: false
+    required: true
+  },
+  role: {
+    type: String,
+    enum: ROLES,
+    default: "INVESTOR",
+    required: true
+  },
+  status: {
+    type: String,
+    enum: STATUS,
+    default: "PENDING"
+  },
+  kycStatus: {
+    type: String,
+    enum: STATUS,
+    default: "PENDING"
+  },
+  accreditationStatus: {
+    type: String,
+    enum: STATUS,
+    default: "PENDING"
+  },
+  amlStatus: {
+    type: String,
+    enum: STATUS,
+    default: "PENDING"
+  },
+  reserveType: {
+    type: String,
+    enum: RESERVE_TYPE,
+    default: "REGULAR"
   },
   reserveAddress: {
     type: String,
@@ -52,41 +79,6 @@ const UserSchema = new Schema({
   investors: {
     type: Array,
     required: false
-  },
-  role: {
-    type: String,
-    enum: ROLES,
-    default: "INVESTOR"
-  },
-  status: {
-    type: String,
-    enum: STATUS,
-    default: "NO"
-  },
-  reserveType: {
-    type: String,
-    enum: RESERVE_TYPE,
-    default: "REGULAR"
-  },
-  kycStatus: {
-    type: String,
-    enum: KYC_STATUS,
-    default: "NO"
-  },
-  accreditationStatus: {
-    type: String,
-    enum: ACCREDITATION_STATUS,
-    default: "NO"
-  },
-  amlStatus: {
-    type: String,
-    enum: AML_STATUS,
-    default: "NO"
-  },
-  verificationStatus: {
-    type: String,
-    enum: VERIFICATION_STATUS,
-    default: "NO"
   }
 });
 

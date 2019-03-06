@@ -1,14 +1,17 @@
 const validator = require("validator");
 const isEmpty = require("./is-Empty");
+const web3Read = require("../utils/web3Read");
 
 module.exports = validateRegisterInput = data => {
   let errors = {};
+  const web3 = web3Read("rinkeby");
   data.username = !isEmpty(data.username) ? data.username : "";
   data.firstName = !isEmpty(data.firstName) ? data.firstName : "";
   data.lastName = !isEmpty(data.lastName) ? data.lastName : "";
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+  data.publicAddress = !isEmpty(data.publicAddress) ? data.publicAddress : "";
 
   if (!validator.isLength(data.username, { min: 3, max: 10 })) {
     errors.username = "username must be in between 3 & 10 Characters";
@@ -48,6 +51,14 @@ module.exports = validateRegisterInput = data => {
 
   if (validator.isEmpty(data.password2)) {
     errors.password2 = "Confirm Password field is required";
+  }
+
+  if (validator.isEmpty(data.publicAddress)) {
+    errors.publicAddress = "public address field is required";
+  }
+
+  if (!web3.utils.checkAddressChecksum(data.publicAddress)) {
+    errors.publicAddress = "Not a valid public address";
   }
 
   return {

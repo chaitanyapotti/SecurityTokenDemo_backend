@@ -8,22 +8,24 @@ router.post("/addinvestor", (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  User.findOne({ username: req.body.username })
-    .then(user => {
-      const investor = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        contact: req.body.contact,
-        status: "pending"
-      };
-      user.investors.push(investor);
-      return res.status(200).json(investor);
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(500).json({});
-    });
+  return res.json({});
+  // don't use existing code here but write node mailer
+  // User.findOne({ username: req.body.username })
+  //   .then(user => {
+  //     const investor = {
+  //       firstname: req.body.firstname,
+  //       lastname: req.body.lastname,
+  //       email: req.body.email,
+  //       contact: req.body.contact,
+  //       status: "pending"
+  //     };
+  //     user.investors.push(investor);
+  //     return res.status(200).json(investor);
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //     return res.status(500).json({});
+  //   });
 });
 
 module.exports = router;

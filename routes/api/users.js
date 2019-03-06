@@ -33,7 +33,13 @@ router.post("/register", (req, res) => {
               last_name: req.body.lastName,
               username: req.body.username,
               password: req.body.password,
-              role: req.body.role
+              role: req.body.role,
+              date: new Date(),
+              publicAddress: req.body.publicAddress,
+              kycStatus: "PENDING",
+              accreditationStatus: "PENDING",
+              amlStatus: "PENDING",
+              status: "PENDING"
             });
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -87,19 +93,23 @@ router.post("/login", (req, res) => {
                   return res.status(200).json({
                     success: true,
                     token: "Bearer " + token,
-                    role: user.role,
-                    first_name: user.first_name,
-                    email: user.email,
-                    phone: user.phone,
-                    last_name: user.last_name,
-                    publicAddress: user.publicAddress,
-                    investors: user.investors || undefined,
-                    reserveAddress: user.reserveAddress || undefined,
-                    date: user.date,
                     id: user._id,
+                    username: user.username,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    email: user.email,
+                    date: user.date,
+                    phone: user.phone,
+                    publicAddress: user.publicAddress,
+                    role: user.role,
                     status: user.status,
+                    kycStatus: user.kycStatus,
+                    accreditationStatus: user.accreditationStatus,
+                    amlStatus: user.amlStatus,
+                    reserveType: user.reserveType || undefined,
+                    reserveAddress: user.reserveAddress || undefined,
                     conversionRatesAddress: user.conversionRatesAddress || undefined,
-                    reserveType: user.reserveType || undefined
+                    investors: user.investors || undefined
                   });
                 });
               } else {
@@ -124,12 +134,23 @@ router.post("/login", (req, res) => {
                 return res.status(200).json({
                   success: true,
                   token: "Bearer " + token,
-                  role: user.role,
+                  id: user._id,
+                  username: user.username,
                   first_name: user.first_name,
+                  last_name: user.last_name,
+                  email: user.email,
+                  date: user.date,
+                  phone: user.phone,
                   publicAddress: user.publicAddress,
-                  investors: user.investors || undefined,
+                  role: user.role,
+                  status: user.status,
+                  kycStatus: user.kycStatus,
+                  accreditationStatus: user.accreditationStatus,
+                  amlStatus: user.amlStatus,
+                  reserveType: user.reserveType || undefined,
                   reserveAddress: user.reserveAddress || undefined,
-                  conversionRatesAddress: user.conversionRatesAddress || undefined
+                  conversionRatesAddress: user.conversionRatesAddress || undefined,
+                  investors: user.investors || undefined
                 });
               });
             } else {
@@ -154,17 +175,29 @@ router.post("/login", (req, res) => {
 
 router.get("/status", (req, res) => {
   const user_id = req.query.id;
-  console.log(user_id, "u");
   User.findById(user_id)
     .then(user => {
       if (!user) {
         return res.status(400).json({ id: "user not found" });
       } else {
         return res.status(200).json({
+          id: user._id,
+          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          date: user.date,
+          phone: user.phone,
+          publicAddress: user.publicAddress,
+          role: user.role,
+          status: user.status,
           kycStatus: user.kycStatus,
           accreditationStatus: user.accreditationStatus,
           amlStatus: user.amlStatus,
-          verificationStatus: user.verificationStatus
+          reserveType: user.reserveType || undefined,
+          reserveAddress: user.reserveAddress || undefined,
+          conversionRatesAddress: user.conversionRatesAddress || undefined,
+          investors: user.investors || undefined
         });
       }
     })
