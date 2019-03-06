@@ -6,8 +6,7 @@ const keys = require("../../config/keys");
 const jwt = require("jsonwebtoken");
 const validateRegisterInput = require("../../validations/register");
 const validateLoginInput = require("../../validations/login");
-const validateStatusInput = require("../../validations/status");
-const validatePublicAddressInput = require("../../validations/publicAddress");
+const validateInput = require("../../validations/input");
 
 function generateUserObject(user) {
   return {
@@ -95,12 +94,12 @@ router.post("/register", (req, res) => {
 // @access Public
 
 router.post("/login", (req, res) => {
-  const usernameOrEmail = req.body.usernameOrEmail;
-  const password = req.body.password;
   const { errors, isValid } = validateLoginInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
+  const usernameOrEmail = req.body.usernameOrEmail;
+  const password = req.body.password;
   User.findOne({ email: usernameOrEmail })
     .then(user => {
       if (!user) {
@@ -165,12 +164,12 @@ router.post("/login", (req, res) => {
 // @desc get verification status of the user
 // @access Public
 
-router.get("/status", (req, res) => {
-  const user_id = req.query.id;
-  const { errors, isValid } = validateStatusInput(req.query);
+router.get("/", (req, res) => {
+  const { errors, isValid } = validateInput(req.query, "id");
   if (!isValid) {
     return res.status(400).json(errors);
   }
+  const user_id = req.query.id;
   User.findById(user_id)
     .then(user => {
       if (!user) {
@@ -188,11 +187,11 @@ router.get("/status", (req, res) => {
 // @access Public
 
 router.get("/public_address", (req, res) => {
-  const public_address = req.query.public_address;
-  const { errors, isValid } = validatePublicAddressInput(req.query);
+  const { errors, isValid } = validateInput(req.query, "public_address");
   if (!isValid) {
     return res.status(400).json(errors);
   }
+  const { public_address } = req.query;
   User.findOne({ publicAddress: public_address })
     .then(user => {
       if (!user) {
@@ -205,19 +204,36 @@ router.get("/public_address", (req, res) => {
     .catch(err => res.status(500).json(err.message));
 });
 
-router.patch("/kyc_status", (req, res) => {
-  // validate these two
-  // status should also be one of STATUS objects in model
+router.patch("/status", (req, res) => {
+  const { errors, isValid } = validateInput(req.query, "id");
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+  const { errors: bodyErrors, isValid: bodyValidity } = validateInput(req.body, "status");
+  if (!bodyValidity) {
+    return res.status(400).json(bodyErrors);
+  }
+  const { errors: bodyErrors2, isValid: bodyValidity2 } = validateInput(req.body, "field");
+  if (!bodyValidity2) {
+    return res.status(400).json(bodyErrors2);
+  }
   const user_id = req.query.id;
   const status = req.body.status;
-  User.findByIdAndUpdate(user_id, { kycStatus: status })
+  const field = req.body.field;
+  // Don't use findByIdAndUpdate since it skips schema validations
+  // status validation is done automatically because of mongoose
+  User.findById(user_id)
     .then(user => {
-      if (!user) {
-        return res.status(400).json({ id: "user not found" });
-      } else {
-        console.log(user);
-        return res.status(200).json(generateUserObject(user));
-      }
+      // Update user with the available fields
+      const itemField = User.schema.path(field);
+      if (itemField) {
+        user[field] = status;
+
+        user.save((saveErr, updatedUser) => {
+          if (saveErr) return res.status(500).json(saveErr.message);
+          res.json(generateUserObject(updatedUser));
+        });
+      } else res.status(400).json({ message: "field doesn't exist" });
     })
     .catch(err => res.status(500).json(err.message));
 });
