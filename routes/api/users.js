@@ -109,7 +109,7 @@ router.post("/login", (req, res) => {
                     reserveType: user.reserveType || undefined,
                     reserveAddress: user.reserveAddress || undefined,
                     conversionRatesAddress: user.conversionRatesAddress || undefined,
-                    investors: user.investors || undefined
+                    investors: user.investors.length > 0 ? user.investors : undefined
                   });
                 });
               } else {
@@ -150,7 +150,7 @@ router.post("/login", (req, res) => {
                   reserveType: user.reserveType || undefined,
                   reserveAddress: user.reserveAddress || undefined,
                   conversionRatesAddress: user.conversionRatesAddress || undefined,
-                  investors: user.investors || undefined
+                  investors: user.investors.length > 0 ? user.investors : undefined
                 });
               });
             } else {
@@ -197,7 +197,7 @@ router.get("/status", (req, res) => {
           reserveType: user.reserveType || undefined,
           reserveAddress: user.reserveAddress || undefined,
           conversionRatesAddress: user.conversionRatesAddress || undefined,
-          investors: user.investors || undefined
+          investors: user.investors.length > 0 ? user.investors : undefined
         });
       }
     })
