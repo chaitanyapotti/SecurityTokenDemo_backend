@@ -204,4 +204,39 @@ router.get("/status", (req, res) => {
     .catch(err => res.status(400).json(err.message));
 });
 
+// @route GET/users/pulicAddress
+// @desc get user by public address
+// @access Public
+
+router.get("/public_address", (req, res) => {
+  const public_address = req.query.public_address;
+  User.findOne({ publicAddress: public_address })
+    .then(user => {
+      if (!user) {
+        return res.status(400).json({ publicAddress: "user not found" });
+      } else {
+        return res.status(200).json({
+          id: user._id,
+          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          date: user.date,
+          phone: user.phone,
+          publicAddress: user.publicAddress,
+          role: user.role,
+          status: user.status,
+          kycStatus: user.kycStatus,
+          accreditationStatus: user.accreditationStatus,
+          amlStatus: user.amlStatus,
+          reserveType: user.reserveType || undefined,
+          reserveAddress: user.reserveAddress || undefined,
+          conversionRatesAddress: user.conversionRatesAddress || undefined,
+          investors: user.investors || undefined
+        });
+      }
+    })
+    .catch(err => res.status(400).json(err.message));
+});
+
 module.exports = router;
