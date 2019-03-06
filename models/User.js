@@ -70,7 +70,6 @@ const UserSchema = new Schema({
   reserveType: {
     type: String,
     enum: RESERVE_TYPE,
-    default: "REGULAR",
     required: false
   },
   reserveAddress: {
