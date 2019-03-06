@@ -228,7 +228,9 @@ router.patch("/status", (req, res) => {
       const itemField = User.schema.path(field);
       if (itemField) {
         user[field] = status;
-
+        if (user.kycStatus === "APPROVED" && user.amlStatus === "APPROVED" && user.accreditationStatus === "APPROVED") {
+          user[status] = "APPROVED";
+        }
         user.save((saveErr, updatedUser) => {
           if (saveErr) return res.status(500).json(saveErr.message);
           res.json(generateUserObject(updatedUser));
