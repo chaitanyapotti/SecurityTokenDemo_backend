@@ -6,6 +6,8 @@ const keys = require("../../config/keys");
 const jwt = require("jsonwebtoken");
 const validateRegisterInput = require("../../validations/register");
 const validateLoginInput = require("../../validations/login");
+const validateStatusInput = require("../../validations/status");
+const validatePublicAddressInput = require("../../validations/publicAddress");
 
 function generateUserObject(user) {
   return {
@@ -165,10 +167,15 @@ router.post("/login", (req, res) => {
 
 router.get("/status", (req, res) => {
   const user_id = req.query.id;
+  const { errors, isValid } = validateStatusInput(req.query);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   User.findById(user_id)
     .then(user => {
       if (!user) {
-        return res.status(400).json({ id: "user not found" });
+        errors.id = "user not found";
+        return res.status(400).json(errors);
       } else {
         return res.status(200).json(generateUserObject(user));
       }
@@ -182,10 +189,15 @@ router.get("/status", (req, res) => {
 
 router.get("/public_address", (req, res) => {
   const public_address = req.query.public_address;
+  const { errors, isValid } = validatePublicAddressInput(req.query);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   User.findOne({ publicAddress: public_address })
     .then(user => {
       if (!user) {
-        return res.status(400).json({ publicAddress: "user not found" });
+        errors.publicAddress = "user not found";
+        return res.status(400).json(errors);
       } else {
         return res.status(200).json(generateUserObject(user));
       }
