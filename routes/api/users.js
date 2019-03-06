@@ -7,6 +7,28 @@ const jwt = require("jsonwebtoken");
 const validateRegisterInput = require("../../validations/register");
 const validateLoginInput = require("../../validations/login");
 
+function generateUserObject(user) {
+  return {
+    id: user._id,
+    username: user.username,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    email: user.email,
+    date: user.date,
+    phone: user.phone,
+    publicAddress: user.publicAddress,
+    role: user.role,
+    status: user.status,
+    kycStatus: user.kycStatus,
+    accreditationStatus: user.accreditationStatus,
+    amlStatus: user.amlStatus,
+    reserveType: user.reserveType || undefined,
+    reserveAddress: user.reserveAddress || undefined,
+    conversionRatesAddress: user.conversionRatesAddress || undefined,
+    investors: user.investors.length > 0 ? user.investors : undefined
+  };
+}
+
 // @route POST api/users/register
 // @desc register a user
 // @access Public
@@ -93,23 +115,7 @@ router.post("/login", (req, res) => {
                   return res.status(200).json({
                     success: true,
                     token: "Bearer " + token,
-                    id: user._id,
-                    username: user.username,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
-                    email: user.email,
-                    date: user.date,
-                    phone: user.phone,
-                    publicAddress: user.publicAddress,
-                    role: user.role,
-                    status: user.status,
-                    kycStatus: user.kycStatus,
-                    accreditationStatus: user.accreditationStatus,
-                    amlStatus: user.amlStatus,
-                    reserveType: user.reserveType || undefined,
-                    reserveAddress: user.reserveAddress || undefined,
-                    conversionRatesAddress: user.conversionRatesAddress || undefined,
-                    investors: user.investors.length > 0 ? user.investors : undefined
+                    ...generateUserObject(user)
                   });
                 });
               } else {
@@ -134,23 +140,7 @@ router.post("/login", (req, res) => {
                 return res.status(200).json({
                   success: true,
                   token: "Bearer " + token,
-                  id: user._id,
-                  username: user.username,
-                  first_name: user.first_name,
-                  last_name: user.last_name,
-                  email: user.email,
-                  date: user.date,
-                  phone: user.phone,
-                  publicAddress: user.publicAddress,
-                  role: user.role,
-                  status: user.status,
-                  kycStatus: user.kycStatus,
-                  accreditationStatus: user.accreditationStatus,
-                  amlStatus: user.amlStatus,
-                  reserveType: user.reserveType || undefined,
-                  reserveAddress: user.reserveAddress || undefined,
-                  conversionRatesAddress: user.conversionRatesAddress || undefined,
-                  investors: user.investors.length > 0 ? user.investors : undefined
+                  ...generateUserObject(user)
                 });
               });
             } else {
@@ -180,25 +170,7 @@ router.get("/status", (req, res) => {
       if (!user) {
         return res.status(400).json({ id: "user not found" });
       } else {
-        return res.status(200).json({
-          id: user._id,
-          username: user.username,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          date: user.date,
-          phone: user.phone,
-          publicAddress: user.publicAddress,
-          role: user.role,
-          status: user.status,
-          kycStatus: user.kycStatus,
-          accreditationStatus: user.accreditationStatus,
-          amlStatus: user.amlStatus,
-          reserveType: user.reserveType || undefined,
-          reserveAddress: user.reserveAddress || undefined,
-          conversionRatesAddress: user.conversionRatesAddress || undefined,
-          investors: user.investors.length > 0 ? user.investors : undefined
-        });
+        return res.status(200).json(generateUserObject(user));
       }
     })
     .catch(err => res.status(400).json(err.message));
@@ -215,25 +187,7 @@ router.get("/public_address", (req, res) => {
       if (!user) {
         return res.status(400).json({ publicAddress: "user not found" });
       } else {
-        return res.status(200).json({
-          id: user._id,
-          username: user.username,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          email: user.email,
-          date: user.date,
-          phone: user.phone,
-          publicAddress: user.publicAddress,
-          role: user.role,
-          status: user.status,
-          kycStatus: user.kycStatus,
-          accreditationStatus: user.accreditationStatus,
-          amlStatus: user.amlStatus,
-          reserveType: user.reserveType || undefined,
-          reserveAddress: user.reserveAddress || undefined,
-          conversionRatesAddress: user.conversionRatesAddress || undefined,
-          investors: user.investors || undefined
-        });
+        return res.status(200).json(generateUserObject(user));
       }
     })
     .catch(err => res.status(400).json(err.message));
