@@ -77,15 +77,21 @@ router.post("/register", (req, res) => {
                     publicAddress: req.body.publicAddress
                   };
                   broker.investors.push(investor);
-                  broker.save().then(broker => {
-                    newUser
-                      .save()
-                      .then(user => res.status(200).json(user))
-                      .catch(err => {
-                        console.log(err);
-                        return res.status(500).json({});
-                      });
-                  });
+                  broker
+                    .save()
+                    .then(broker => {
+                      newUser
+                        .save()
+                        .then(user => res.status(200).json(user))
+                        .catch(err => {
+                          console.log(err);
+                          return res.status(500).json({});
+                        });
+                    })
+                    .catch(err => {
+                      console.log(err);
+                      return res.status(500).json({});
+                    });
                 });
               });
             });
