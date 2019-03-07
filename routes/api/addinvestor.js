@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require("../../models/User");
 const validateAddInvestorInput = require("../../validations/addinvestor");
 const sgMail = require("@sendgrid/mail");
-const web3Read = require("../../utils/web3Read");
 const validateJwt = require("../../validations/jwt");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
@@ -29,15 +28,13 @@ router.post("/addinvestor", (req, res) => {
         return res.status(400).json(errors);
       } else {
         const { firstName, lastName, email } = req.body;
-        const payload = { firstName, lastName, email };
+        const payload = { firstName, lastName, email, brokerId };
         jwt.sign(payload, keys.secretOrKey, { expiresIn: "1d" }, (err, token) => {
           if (err) {
             console.log(err);
             res.status(500).json({ message: "Some Error Occured" });
           }
-          const web3 = web3Read("rinkeby");
-          const encodedMail = web3.utils.fromAscii(email);
-          html = html.replace(/{{ action_url }}/g, `https://securitytoken.two12.co/signup?token=${token}&broker=${brokerId}&user=${encodedMail}`);
+          html = html.replace(/{{ action_url }}/g, `https://securitytoken.two12.co/signup?token=${token}`);
           html = html.replace(/{{ user }}/g, `${firstName} ${lastName}`);
           sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
           const msg = {
