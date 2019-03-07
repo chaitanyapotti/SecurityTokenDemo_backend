@@ -73,7 +73,7 @@ router.post("/register", (req, res) => {
                 newUser.password = hash;
                 User.findById(brokerId).then(broker => {
                   const investor = {
-                    name: req.body.firstname,
+                    name: req.body.firstName,
                     address: req.body.publicAddress
                   };
                   broker.investors.push(investor);
