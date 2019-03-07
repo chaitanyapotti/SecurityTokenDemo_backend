@@ -22,10 +22,12 @@ router.post("/addinvestor", (req, res) => {
     subject: "Sign Up with Two12",
     html: html
   };
-  sgMail.send(msg, false, (err, resp) => {
-    if (err) console.log(err, "error");
-    else console.log(resp, "success");
-  });
+  sgMail
+    .send(msg)
+    .then(resp => {
+      console.log(resp, "success");
+    })
+    .catch(err => console.log(err));
 
   return res.json({});
   // don't use existing code here but write node mailer
