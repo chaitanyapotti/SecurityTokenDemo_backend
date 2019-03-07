@@ -5,10 +5,10 @@ module.exports = function validateJwt(req) {
   const token = req.get("authorization").split(" ")[1];
   // Get username
   const decoded = jwtDecode(token);
-  const { id, exp } = decoded || {};
+  const { id, exp, email } = decoded || {};
   const currentTime = Date.now() / 1000;
   if (exp < currentTime) {
     expired = true;
   }
-  return { expired, id };
+  return { expired, id, email };
 };

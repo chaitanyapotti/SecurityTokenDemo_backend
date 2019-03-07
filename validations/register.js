@@ -12,6 +12,7 @@ module.exports = validateRegisterInput = data => {
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
   data.publicAddress = !isEmpty(data.publicAddress) ? data.publicAddress : "";
+  data.phone = !isEmpty(data.phone) ? data.phone : "";
 
   if (!validator.isLength(data.username, { min: 3, max: 10 })) {
     errors.username = "username must be in between 3 & 10 Characters";
@@ -19,6 +20,10 @@ module.exports = validateRegisterInput = data => {
 
   if (!validator.isLength(data.password, { min: 5, max: 15 })) {
     errors.password = "Password must be in between 5 & 15 Characters";
+  }
+
+  if (data.publicAddress && !web3.utils.checkAddressChecksum(data.publicAddress)) {
+    errors.publicAddress = "Not a valid public address";
   }
 
   if (!validator.isEmail(data.email)) {
@@ -49,8 +54,8 @@ module.exports = validateRegisterInput = data => {
     errors.publicAddress = "public address field is required";
   }
 
-  if (!web3.utils.checkAddressChecksum(data.publicAddress)) {
-    errors.publicAddress = "Not a valid public address";
+  if (validator.isEmpty(data.phone)) {
+    errors.phone = "phone field is required";
   }
 
   return {
