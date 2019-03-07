@@ -40,7 +40,7 @@ router.post("/register", (req, res) => {
     return res.status(400).json({ message: "Token has expired" });
   }
   if (email != req.body.email) {
-    return res.status(400).json({ message: "Emails doesnt match" });
+    return res.status(400).json({ message: "Email doesn't match" });
   }
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
