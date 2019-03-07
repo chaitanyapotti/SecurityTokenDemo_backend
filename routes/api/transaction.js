@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Transaction = require("../../models/Transaction");
 const validateTransactionInput = require("../../validations/transaction");
-const { validateJwt } = require("./users");
+const validateJwt = require("../../validations/jwt");
 
 function validateInputs(req, res) {
   if (!("bd_address" in req.query)) return res.status(400).json("Bad Request input");

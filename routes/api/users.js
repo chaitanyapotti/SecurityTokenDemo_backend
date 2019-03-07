@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const validateRegisterInput = require("../../validations/register");
 const validateLoginInput = require("../../validations/login");
 const validateInput = require("../../validations/input");
-const jwtDecode = require("jwt-decode");
+const validateJwt = require("../../validations/jwt");
 
 function generateUserObject(user) {
   return {
@@ -29,19 +29,6 @@ function generateUserObject(user) {
     conversionRatesAddress: user.conversionRatesAddress || undefined,
     investors: user.investors.length > 0 ? user.investors : undefined
   };
-}
-
-export function validateJwt(req) {
-  const expired = false;
-  const token = req.get("authorization").split(" ")[1];
-  // Get username
-  const decoded = jwtDecode(token);
-  const { id, exp } = decoded || {};
-  const currentTime = Date.now() / 1000;
-  if (exp < currentTime) {
-    expired = true;
-  }
-  return { expired, id };
 }
 
 // @route POST api/users/register
