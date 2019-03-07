@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ROLES = ["BROKER_DEALER", "MARKET_MAKER", "INVESTOR"];
-const STATUS = ["APPROVED", "PENDING", "REJECTED"];
+const STATUS = ["APPROVED", "PENDING", "REJECTED", "PENDING_APPROVAL"];
 const RESERVE_TYPE = ["REGULAR", "AUTOMATED", "LIT"];
 
 const UserSchema = new Schema({
