@@ -28,6 +28,7 @@ router.post("/addinvestor", (req, res) => {
         return res.status(400).json(errors);
       } else {
         const { firstName, lastName, email } = req.body;
+        const { first_name, last_name } = broker;
         const payload = { firstName, lastName, email, brokerId };
         jwt.sign(payload, keys.secretOrKey, { expiresIn: "1d" }, (err, token) => {
           if (err) {
@@ -36,6 +37,7 @@ router.post("/addinvestor", (req, res) => {
           }
           html = html.replace(/{{ action_url }}/g, `https://securitytoken.two12.co/signup?token=${token}`);
           html = html.replace(/{{ user }}/g, `${firstName} ${lastName}`);
+          html = html.replace(/{{ brokerDealer }}/g, `${first_name} ${last_name}`);
           sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
           const msg = {
             to: email,
