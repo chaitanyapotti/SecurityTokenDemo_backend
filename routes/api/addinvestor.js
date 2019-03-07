@@ -11,7 +11,7 @@ const keys = require("../../config/keys");
 const fs = require("fs");
 const path = require("path");
 const htmlPath = path.resolve(__dirname, "../../models/EmailTemplate.html");
-const html = fs.readFileSync(htmlPath, "utf8");
+let html = fs.readFileSync(htmlPath, "utf8");
 
 router.post("/addinvestor", (req, res) => {
   const { errors, isValid } = validateAddInvestorInput(req.body);
@@ -37,19 +37,18 @@ router.post("/addinvestor", (req, res) => {
           }
           const web3 = web3Read("rinkeby");
           const encodedMail = web3.utils.fromAscii(email);
-          html.replace(/{{ action_url }}/g, `https://securitytoken.two12.co/signup?token=${token}&broker=${brokerId}&user=${encodedMail}`);
-          html.replace(/{{ user }}/g, `${firstName} ${lastName}`);
+          html = html.replace(/{{ action_url }}/g, `https://securitytoken.two12.co/signup?token=${token}&broker=${brokerId}&user=${encodedMail}`);
+          html = html.replace(/{{ user }}/g, `${firstName} ${lastName}`);
           sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
           const msg = {
             to: email,
-            from: "chaitanya@two12.co",
+            from: "no-reply@two12.co",
             subject: "Sign Up with Two12",
             html: html
           };
           sgMail
             .send(msg)
             .then(resp => {
-              console.log(resp, "success");
               res.json({ message: "Success" });
             })
             .catch(err => {
