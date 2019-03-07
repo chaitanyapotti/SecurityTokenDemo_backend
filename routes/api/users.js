@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const validateRegisterInput = require("../../validations/register");
 const validateLoginInput = require("../../validations/login");
 const validateInput = require("../../validations/input");
+const jwtDecode = require("jwt-decode");
 
 function generateUserObject(user) {
   return {
@@ -28,6 +29,19 @@ function generateUserObject(user) {
     conversionRatesAddress: user.conversionRatesAddress || undefined,
     investors: user.investors.length > 0 ? user.investors : undefined
   };
+}
+
+export function validateJwt(req) {
+  const expired = false;
+  const token = req.get("authorization").split(" ")[1];
+  // Get username
+  const decoded = jwtDecode(token);
+  const { id, exp } = decoded || {};
+  const currentTime = Date.now() / 1000;
+  if (exp < currentTime) {
+    expired = true;
+  }
+  return { expired, id };
 }
 
 // @route POST api/users/register
@@ -205,10 +219,6 @@ router.get("/public_address", (req, res) => {
 });
 
 router.patch("/status", (req, res) => {
-  const { errors, isValid } = validateInput(req.query, "id");
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
   const { errors: bodyErrors, isValid: bodyValidity } = validateInput(req.body, "status");
   if (!bodyValidity) {
     return res.status(400).json(bodyErrors);
@@ -217,7 +227,11 @@ router.patch("/status", (req, res) => {
   if (!bodyValidity2) {
     return res.status(400).json(bodyErrors2);
   }
-  const user_id = req.query.id;
+  const { expired, id } = validateJwt(req);
+  if (expired) {
+    return res.status(400).json({ message: "Token has expired" });
+  }
+  const user_id = id;
   const status = req.body.status;
   const field = req.body.field;
   // Don't use findByIdAndUpdate since it skips schema validations

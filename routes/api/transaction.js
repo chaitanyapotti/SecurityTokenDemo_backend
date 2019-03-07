@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Transaction = require("../../models/Transaction");
 const validateTransactionInput = require("../../validations/transaction");
+const { validateJwt } = require("./users");
 
 function validateInputs(req, res) {
   if (!("bd_address" in req.query)) return res.status(400).json("Bad Request input");
@@ -16,6 +17,10 @@ router.post("/", (req, res) => {
   const { errors, isValid } = validateTransactionInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
+  }
+  const { expired } = validateJwt(req);
+  if (expired) {
+    return res.status(400).json({ message: "Token has expired" });
   }
   Transaction.findOne({ transaction_hash: req.body.transactionHash })
     .then(transaction => {

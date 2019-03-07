@@ -20,6 +20,7 @@
     "http-errors": "^1.7.1",
     "jade": "^1.11.0",
     "jsonwebtoken": "^8.4.0",
+    "jwt-decode": "^2.2.0",
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.13",
     "morgan": "^1.9.1",
