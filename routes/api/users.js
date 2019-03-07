@@ -35,7 +35,7 @@ function generateUserObject(user) {
 // @desc register a user
 // @access Public
 router.post("/register", (req, res) => {
-  const { expired, id, email } = validateJwt(req);
+  const { expired, brokerId, email } = validateJwt(req);
   if (expired) {
     return res.status(400).json({ message: "Token has expired" });
   }
@@ -71,7 +71,7 @@ router.post("/register", (req, res) => {
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(newUser.password, salt, (err, hash) => {
                 newUser.password = hash;
-                User.findById(id).then(broker => {
+                User.findById(brokerId).then(broker => {
                   const investor = {
                     name: req.body.firstname,
                     address: req.body.publicAddress
