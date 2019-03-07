@@ -35,6 +35,13 @@ function generateUserObject(user) {
 // @desc register a user
 // @access Public
 router.post("/register", (req, res) => {
+  const { expired, id, email } = validateJwt(req);
+  if (expired) {
+    return res.status(400).json({ message: "Token has expired" });
+  }
+  if (email != req.body.email) {
+    return res.status(400).json({ message: "Emails doesnt match" });
+  }
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
@@ -57,19 +64,29 @@ router.post("/register", (req, res) => {
               last_name: req.body.lastName,
               username: req.body.username,
               password: req.body.password,
+              phone: req.body.phone,
               date: new Date(),
               publicAddress: req.body.publicAddress
             });
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(newUser.password, salt, (err, hash) => {
                 newUser.password = hash;
-                newUser
-                  .save()
-                  .then(user => res.status(200).json(user))
-                  .catch(err => {
-                    console.log(err);
-                    return res.status(500).json({});
+                User.findById(id).then(broker => {
+                  const investor = {
+                    firstname: req.body.firstname,
+                    publicAddress: req.body.publicAddress
+                  };
+                  broker.investors.push(investor);
+                  broker.save().then(broker => {
+                    newUser
+                      .save()
+                      .then(user => res.status(200).json(user))
+                      .catch(err => {
+                        console.log(err);
+                        return res.status(500).json({});
+                      });
                   });
+                });
               });
             });
           }
