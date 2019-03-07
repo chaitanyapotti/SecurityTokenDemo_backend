@@ -57,13 +57,8 @@ router.post("/register", (req, res) => {
               last_name: req.body.lastName,
               username: req.body.username,
               password: req.body.password,
-              role: req.body.role,
               date: new Date(),
-              publicAddress: req.body.publicAddress,
-              kycStatus: "PENDING",
-              accreditationStatus: "PENDING",
-              amlStatus: "PENDING",
-              status: "PENDING"
+              publicAddress: req.body.publicAddress
             });
             bcrypt.genSalt(10, (err, salt) => {
               bcrypt.hash(newUser.password, salt, (err, hash) => {

@@ -25,10 +25,6 @@ module.exports = validateRegisterInput = data => {
     errors.email = "Email is invalid";
   }
 
-  if (!validator.equals(data.password, data.password2)) {
-    errors.password2 = "passwords must match";
-  }
-
   if (validator.isEmpty(data.username)) {
     errors.username = "username field is required";
   }
@@ -38,7 +34,7 @@ module.exports = validateRegisterInput = data => {
   }
 
   if (validator.isEmpty(data.lastName)) {
-    errors.lastName = "username field is required";
+    errors.lastName = "lastname field is required";
   }
 
   if (validator.isEmpty(data.email)) {
@@ -47,10 +43,6 @@ module.exports = validateRegisterInput = data => {
 
   if (validator.isEmpty(data.password)) {
     errors.password = "Password field is required";
-  }
-
-  if (validator.isEmpty(data.password2)) {
-    errors.password2 = "Confirm Password field is required";
   }
 
   if (validator.isEmpty(data.publicAddress)) {
