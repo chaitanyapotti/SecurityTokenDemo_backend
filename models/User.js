@@ -67,6 +67,10 @@ const UserSchema = new Schema({
     default: "PENDING",
     required: true
   },
+  brokerDealer: {
+    type: Object,
+    required: false
+  },
   reserveType: {
     type: String,
     enum: RESERVE_TYPE,

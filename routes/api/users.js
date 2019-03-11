@@ -24,6 +24,7 @@ function generateUserObject(user) {
     kycStatus: user.kycStatus,
     accreditationStatus: user.accreditationStatus,
     amlStatus: user.amlStatus,
+    brokerDealer: user.brokerDealer || undefined,
     reserveType: user.reserveType || undefined,
     reserveAddress: user.reserveAddress || undefined,
     conversionRatesAddress: user.conversionRatesAddress || undefined,
@@ -75,6 +76,11 @@ router.post("/register", (req, res) => {
                   const investor = {
                     name: req.body.firstName,
                     address: req.body.publicAddress
+                  };
+                  newUser.brokerDealer = {
+                    first_name: broker.first_name,
+                    last_name: broker.last_name,
+                    publicAddress: broker.publicAddress
                   };
                   broker.investors.push(investor);
                   broker
