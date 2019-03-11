@@ -42,7 +42,7 @@ router.post("/addinvestor", (req, res) => {
           const msg = {
             to: email,
             from: "no-reply@two12.co",
-            subject: "Sign Up with Two12",
+            subject: `You have been invited by ${first_name} ${last_name}`,
             html: html
           };
           sgMail
