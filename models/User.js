@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const ROLES = ["BROKER_DEALER", "MARKET_MAKER", "INVESTOR"];
+const ROLES = ["BROKER_DEALER", "MARKET_MAKER", "INVESTOR", "ISSUER"];
 const STATUS = ["APPROVED", "PENDING", "REJECTED", "PENDING_APPROVAL"];
 const RESERVE_TYPE = ["REGULAR", "AUTOMATED", "LIT"];
 
@@ -86,6 +86,10 @@ const UserSchema = new Schema({
   },
   investors: {
     type: Array,
+    required: false
+  },
+  tokenAddress : {
+    type: String,
     required: false
   }
 });

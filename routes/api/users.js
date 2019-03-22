@@ -28,7 +28,8 @@ function generateUserObject(user) {
     reserveType: user.reserveType || undefined,
     reserveAddress: user.reserveAddress || undefined,
     conversionRatesAddress: user.conversionRatesAddress || undefined,
-    investors: user.investors.length > 0 ? user.investors : undefined
+    investors: user.investors.length > 0 ? user.investors : undefined,
+    tokenAddress: user.tokenAddress || undefined
   };
 }
 
